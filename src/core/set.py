@@ -5,16 +5,17 @@
 # Written by: David Kennedy (ReL1K)
 #
 #
-import shutil
 import os
-import time
 import re
-import sys
+import shutil
 import socket
-from src.core.setcore import *
+import sys
+
+import src.core.setcore as core
 from src.core.menu import text
+
 ipaddr = ""
-me = mod_name()
+me = core.mod_name()
 #
 # Define path and set it to the SET root dir
 #
@@ -27,27 +28,20 @@ sys.path.append(definepath)
 #
 
 # grab the operating system
-operating_system = check_os()
+operating_system = core.check_os()
 
 # grab metasploit path
-msf_path = meta_path()
+msf_path = core.meta_path()
 
-if operating_system == "posix":
-    if os.geteuid() != 0:
-        print(
-            "\n The Social-Engineer Toolkit (SET) - by David Kennedy (ReL1K)")
-        print(
-            "\n Not running as root. \n\nExiting the Social-Engineer Toolkit (SET).\n")
-        sys.exit(1)
 
-define_version = get_version()
+define_version = core.get_version()
 
 try:
     while 1:
         show_banner(define_version, '1')
-       #
-       # USER INPUT: SHOW MAIN MENU               #
-       #
+        #
+        # USER INPUT: SHOW MAIN MENU               #
+        #
         debug_msg(me, "printing 'text.main'", 5)
         show_main_menu = create_menu(text.main_text, text.main)
         # special case of list item 99
@@ -57,19 +51,12 @@ try:
         if main_menu_choice == 'exit':
             break
 
-        if operating_system == "windows" or msf_path == False:
-            if main_menu_choice == "1" or main_menu_choice == "4" or main_menu_choice == "8" or main_menu_choice == "3":
-                print_warning(
-                    "Sorry. This feature is not yet supported in Windows or Metasploit was not found.")
-                return_continue()
-                break
-
         if main_menu_choice == '1':  # 'Spearphishing Attack Vectors
             while 1:
 
-             #
-             # USER INPUT: SHOW SPEARPHISH MENU         #
-             #
+                #
+                # USER INPUT: SHOW SPEARPHISH MENU         #
+                #
 
                 if operating_system != "windows":
                     debug_msg(me, "printing 'text.spearphish_menu'", 5)
@@ -112,9 +99,9 @@ try:
                     if spearphish_menu_choice == '99':
                         break
 
- #
- # Web Attack Menu
- #
+                        #
+                        # Web Attack Menu
+                        #
         # Main Menu choice 2: Website Attack Vectors
         if main_menu_choice == '2':
             while 1:
@@ -171,10 +158,10 @@ try:
                     return_continue()
                     break
 
-                #
-                # HTA ATTACK VECTOR METHOD HERE
-                #
-                # if attack_vector == '8':
+                    #
+                    # HTA ATTACK VECTOR METHOD HERE
+                    #
+                    # if attack_vector == '8':
                     # assign HTA attack vector - do more later
                 #    attack_vector = "hta"
 
@@ -390,7 +377,7 @@ try:
                     # Select SET quick setup
                     if choice3 == '1':
 
-                            # get the template ready
+                        # get the template ready
                         sys.path.append(definepath + "/src/html/templates")
                         debug_msg(
                             me, "importing src.html.templates.template'", 1)
@@ -401,7 +388,7 @@ try:
 
                         # grab browser exploit selection
                         if attack_vector == "browser":
-                                # grab clientattack
+                            # grab clientattack
                             sys.path.append(
                                 definepath + "/src/webattack/browser_exploits")
                             debug_msg(
@@ -476,6 +463,7 @@ try:
                             # get ready
                             if attack_vector == "profiler":
                                 from src.webattack.profiler.webprofiler import *
+
                                 prep_website()
 
                             # launch HTA attack vector after the website has
@@ -484,6 +472,7 @@ try:
                                 # launch HTA attack vector after the website
                                 # has been cloned
                                 from src.webattack.hta.main import *
+
                                 # update config
                                 update_options("ATTACK_VECTOR=HTA")
                                 gen_hta_cool_stuff()
@@ -558,6 +547,7 @@ try:
                             # launch HTA attack vector after the website has
                             # been cloned
                             from src.webattack.hta.main import *
+
                             # update config
                             update_options("ATTACK_VECTOR=HTA")
                             gen_hta_cool_stuff()
@@ -742,6 +732,7 @@ try:
                             # launch HTA attack vector after the website has
                             # been cloned
                             from src.webattack.hta.main import *
+
                             # update config
                             update_options("ATTACK_VECTOR=HTA")
                             gen_hta_cool_stuff()
@@ -782,7 +773,7 @@ try:
 
                         # if not harvester spawn server
                         if attack_vector == "java" or attack_vector == "browser":
-                                # import web_server and do magic
+                            # import web_server and do magic
                             sys.path.append(definepath + "/src/html")
                             debug_msg(me, "importing 'src.html.spawn'", 1)
                             try:
@@ -874,10 +865,10 @@ try:
         # Define Auto-Infection USB/CD Method here
         if main_menu_choice == '3':
 
-                #
-                # USER INPUT: SHOW INFECTIOUS MEDIA MENU      #
-                #
-                # Main Menu choice 3: Infectious Media Generator
+            #
+            # USER INPUT: SHOW INFECTIOUS MEDIA MENU      #
+            #
+            # Main Menu choice 3: Infectious Media Generator
             debug_msg(me, "printing 'text.infectious_menu'", 5)
             show_infectious_menu = create_menu(
                 text.infectious_text, text.infectious_menu)
@@ -939,6 +930,7 @@ try:
         if main_menu_choice == '4':
             update_options("PAYLOADGEN=SOLO")
             import src.core.payloadgen.solo
+
             # try: import src.core.payloadgen.solo
             # except: module_reload(src.core.payloadgen.solo)
             # if the set payload is there
@@ -1115,9 +1107,9 @@ try:
                         # start the menu here
                         while 1:
 
-                                #
-                                # USER INPUT: SHOW WIRELESS MENU           #
-                                #
+                            #
+                            # USER INPUT: SHOW WIRELESS MENU           #
+                            #
                             debug_msg(
                                 me, "printing 'text.wireless_attack_menu'", 5)
                             show_wireless_menu = create_menu(
@@ -1164,6 +1156,7 @@ try:
             try:
                 from PIL import Image, ImageDraw
                 from src.qrcode.qrgenerator import *
+
                 print("""
 The QRCode Attack Vector will create a QRCode for you with whatever URL you want.
 
@@ -1215,7 +1208,3 @@ and send the QRCode via a mailer.
         if main_menu_choice == '99':
             break
 
-# handle keyboard interrupts
-except KeyboardInterrupt:
-    print("\n\n Thank you for " + bcolors.RED + "shopping" + bcolors.ENDC +
-          " with the Social-Engineer Toolkit.\n\n Hack the Gibson...and remember...hugs are worth more than handshakes.\n")

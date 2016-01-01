@@ -444,6 +444,11 @@ def grab_ipaddress():
 # cleanup old or stale files
 #
 def cleanup_routine():
+    """
+    Cleanup old or stale files
+    :return:
+    :rtype:
+    """
     try:
         # restore original Java Applet
         shutil.copyfile("%s/src/html/Signed_Update.jar.orig" %

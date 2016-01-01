@@ -1,3 +1,4 @@
+configobj
 pexpect
 pycrypto
 requests
